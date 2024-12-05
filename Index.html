@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Robloxification</title>
+    <style>
+        /* Add your CSS styles here */
+    </style>
+</head>
+<body>
+    <h1>Robloxification</h1>
+    <p>Your one-stop shop for Roblox scripts.</p>
+
+    <input type="text" id="searchInput" placeholder="Search for scripts...">
+    <button onclick="searchScripts()">Search</button>
+
+    <div id="scriptList"></div>
+
+    <script>
+        // Fetch script data from a GitHub repository (replace with your actual repository URL)
+        fetch('https://api.github.com/repos/your_username/your_repo/contents/scripts')
+            .then(response => response.json())
+            .then(data => {
+                const scriptList = document.getElementById('scriptList');
+
+                data.forEach(file => {
+                    if (file.name.endsWith('.lua')) {
+                        const scriptName = file.name.replace('.lua', '');
+                        const scriptUrl = file.html_url;
+
+                        const scriptElement = document.createElement('div');
+                        scriptElement.innerHTML = `
+                            <h2>${scriptName}</h2>
+                            <a href="${scriptUrl}" target="_blank">View on GitHub</a>
+                            <button onclick="downloadScript('${scriptUrl}', '${scriptName}')">Download</button>
+                            <button onclick="copyScript('${scriptUrl}')">Copy Code</button>
+                        `;
+                        scriptList.appendChild(scriptElement);
+                    }
+                });
+            });
+
+        function downloadScript(url, filename) {
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = filename + '.lua';
+            link.click();
+        }
+
+        function copyScript(url) {
+            fetch(url)
+                .then(response => response.text())
+                .then(code => {
+                    navigator.clipboard.writeText(code)
+                        .then(() => {
+                            alert('Code copied to clipboard!');
+                        })
+                        .catch(err => {
+                            console.error('Error copying code:', err);
+                            alert('Failed to copy code. Please try again.');
+                        });
+                });
+        }
+
+        function searchScripts() {
+            // Implement search functionality here
+            // ...
+        }
+    </script>
+</body>
+</html>
