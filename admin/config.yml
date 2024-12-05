@@ -1,0 +1,16 @@
+backend:
+  name: git-gateway
+  branch: main # Replace with your branch
+
+media_folder: "static/assets/uploads" # Where uploaded images are stored
+public_folder: "/assets/uploads" # Public path for uploaded images
+
+collections:
+  - name: "pages" # Name in the CMS
+    label: "Pages"
+    folder: "content/pages" # Content directory
+    create: true # Allow users to create new files
+    slug: "{{slug}}" # Use the title to generate a slug
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Body", name: "body", widget: "markdown" }
